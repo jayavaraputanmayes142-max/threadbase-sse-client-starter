@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
     setUser(data.user);
     // store token so the apiClient interceptor can attach it
     apiClient.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
+    document.cookie = `tb_token=${encodeURIComponent(data.accessToken)}; path=/; SameSite=Strict`;
     return data;
   }
 
@@ -20,6 +21,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     setToken(null);
     delete apiClient.defaults.headers.common["Authorization"];
+    document.cookie = "tb_token=; path=/; max-age=0; SameSite=Strict";
   }
 
   return (
